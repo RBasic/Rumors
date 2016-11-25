@@ -9,6 +9,14 @@ public class Resistant : Agent {
     {
         base.interaction(a);
         a.setDoute(-0.1f);
+    }
 
+    public new void initDoute()
+    {
+        setDoute(0);
+    }
+
+    public new void setDoute(float val)
+    {
     }
 }

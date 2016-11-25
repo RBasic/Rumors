@@ -26,10 +26,6 @@ public class SpawnAgent : MonoBehaviour
     [SerializeField] private InputField inputResistant;
     [SerializeField] private InputField inputLambda;
 
-    enum enumType
-    {
-       investigator, interprete, leader, apotre, relaisPassif, resistant, lambda
-    }
 
     void Start()
     {
@@ -68,39 +64,39 @@ public class SpawnAgent : MonoBehaviour
     {
         for (int i = 0; i < lambda; i++)
         {
-            spawn(enumType.lambda);
+            spawn(GameManager.enumType.lambda);
         }
         for (int i = 0; i < investigator; i++)
         {
-            spawn(enumType.investigator);
+            spawn(GameManager.enumType.investigator);
         }
         for (int i = 0; i < interprete; i++)
         {
-            spawn(enumType.interprete);
+            spawn(GameManager.enumType.interprete);
         }
         for (int i = 0; i < apotre; i++)
         {
-            spawn(enumType.apotre);
+            spawn(GameManager.enumType.apotre);
         }
         for (int i = 0; i < relaisPassif; i++)
         {
-            spawn(enumType.relaisPassif);
+            spawn(GameManager.enumType.relaisPassif);
         }
         for (int i = 0; i < leader; i++)
         {
-            spawn(enumType.leader);
+            spawn(GameManager.enumType.leader);
         }
         for (int i = 0; i < resistant; i++)
         {
-            spawn(enumType.resistant);
+            spawn(GameManager.enumType.resistant);
         }
         for (int i = 0; i < leader; i++)
         {
-            spawn(enumType.leader);
+            spawn(GameManager.enumType.leader);
         }
     }
 
-    void spawn(enumType t)
+    void spawn(GameManager.enumType t)
     {
         // Find a random index between zero and one less than the number of spawn points.
         float randomX = Random.Range(xMin, xMax);
@@ -112,22 +108,22 @@ public class SpawnAgent : MonoBehaviour
         go.transform.SetParent(this.gameObject.transform);
         switch (t)
         {
-            case enumType.investigator:
+            case GameManager.enumType.investigator:
                 go.AddComponent<Investigator>();
                 go.name = "investigator";
                 break;
 
-            case enumType.interprete:
+            case GameManager.enumType.interprete:
                 go.AddComponent<Interprete>();
                 go.name = "interpretre";
                 break;
 
-            case enumType.apotre:
+            case GameManager.enumType.apotre:
                 go.AddComponent<Apotre>();
                 go.name = "apotre";
                 break;
 
-            case enumType.leader:
+            case GameManager.enumType.leader:
                 go.AddComponent<Leader>();
                 go.name = "leader";
                 int nbSuiveurs = Random.Range(2, 5);
@@ -138,23 +134,24 @@ public class SpawnAgent : MonoBehaviour
                 }
                 break;
 
-            case enumType.relaisPassif:
+            case GameManager.enumType.relaisPassif:
                 go.AddComponent<RelaisPassif>();
                 go.name = "relais passif";
                 break;
 
-            case enumType.resistant:
+            case GameManager.enumType.resistant:
                 go.AddComponent<Resistant>();
                 go.name = "résistant";
                 break;
 
-            case enumType.lambda:
+            case GameManager.enumType.lambda:
                 go.AddComponent<Agent>();
                 go.name = "lambda";
                 lambdas.Add(go);
                 break;
 
         }
+        go.GetComponent<Agent>().init(t);
     }
 
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Color selectedColor;
     [SerializeField] private GameObject panelInfo;
+    [SerializeField] private Text panelInfoType;
+    [SerializeField] private Text panelInfoDoubt;
     [SerializeField] private GameObject blabla;
     private GameObject currentAgent;
 
@@ -16,6 +19,11 @@ public class GameManager : MonoBehaviour
     private Color colorDoubt0;
     [SerializeField]
     private Color colorDoubt1;
+
+    public enum enumType
+    {
+        investigator, interprete, leader, apotre, relaisPassif, resistant, lambda
+    }
 
     void Awake()
     {
@@ -84,6 +92,8 @@ public class GameManager : MonoBehaviour
         if (currentAgent != null)
         {
             panelInfo.SetActive(true);
+            panelInfoDoubt.text = currentAgent.GetComponent<Agent>().getDoute().ToString();
+            panelInfoType.text = currentAgent.GetComponent<Agent>().getTypeAgent().ToString();
         }
         else
         {

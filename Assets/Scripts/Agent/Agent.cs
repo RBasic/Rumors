@@ -21,14 +21,22 @@ public class Agent : MonoBehaviour
 
     public TextMesh t;
 
-    void Start()
+    private GameManager.enumType typeAgent;
+
+    public void init(GameManager.enumType typeAgent)
     {
+        this.typeAgent = typeAgent;
         t = gameObject.GetComponentInChildren<TextMesh>();
         defaultcolor = this.gameObject.GetComponent<MeshRenderer>().material.color;
-        int randomDoute = Random.Range(0, 11);
-        doute = (float) randomDoute/10.0f;
+        initDoute();
         t.text = doute.ToString();
         changeColor();
+    }
+
+    public void initDoute()
+    {
+        int randomDoute = Random.Range(0, 11);
+        doute = (float)randomDoute / 10.0f;
     }
 
     public Color getDefaultColor()
@@ -58,7 +66,6 @@ public class Agent : MonoBehaviour
             deltaDoute += val;
             changeColor();
             t.text = doute.ToString();
-
         }
     }
 
@@ -113,4 +120,8 @@ public class Agent : MonoBehaviour
         gameObject.GetComponent<MeshRenderer>().material.color = c;
     }
 
+    public GameManager.enumType getTypeAgent()
+    {
+        return typeAgent;
+    }
 }
