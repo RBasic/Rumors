@@ -19,11 +19,16 @@ public class Agent : MonoBehaviour
 
     private bool isTarget = false;
 
+    public TextMesh t;
+
     void Start()
     {
+        t = gameObject.GetComponentInChildren<TextMesh>();
         defaultcolor = this.gameObject.GetComponent<MeshRenderer>().material.color;
         int randomDoute = Random.Range(0, 11);
         doute = (float) randomDoute/10.0f;
+        t.text = doute.ToString();
+        changeColor();
     }
 
     public Color getDefaultColor()
@@ -51,6 +56,9 @@ public class Agent : MonoBehaviour
         {
             doute += val;
             deltaDoute += val;
+            changeColor();
+            t.text = doute.ToString();
+
         }
     }
 
@@ -65,7 +73,7 @@ public class Agent : MonoBehaviour
         if (nbHeard/ palierHeardToIncrease > cptPalierNbHeard)
         {
             cptPalierNbHeard++;
-            doute += 0.1f;
+            setDoute(0.1f);
         }
     }
 
@@ -98,4 +106,11 @@ public class Agent : MonoBehaviour
     {
         return isTarget;
     }
+
+    void changeColor()
+    {
+        Color c = Color.Lerp(GameManager.instance.getColorDoubt0(), GameManager.instance.getColorDoubt1(), doute);  // Color C is doute% from A and 90% from B. 
+        gameObject.GetComponent<MeshRenderer>().material.color = c;
+    }
+
 }

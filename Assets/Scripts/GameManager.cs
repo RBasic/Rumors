@@ -2,11 +2,20 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+ 
+
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Color selectedColor;
     [SerializeField] private GameObject panelInfo;
+    [SerializeField] private GameObject blabla;
     private GameObject currentAgent;
+
+    [Header("Colors of doubt")]
+    [SerializeField]
+    private Color colorDoubt0;
+    [SerializeField]
+    private Color colorDoubt1;
 
     void Awake()
     {
@@ -82,4 +91,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public GameObject getBlabla()
+    {
+        return blabla;
+    }
+
+    public Color getColorDoubt0()
+    {
+        return colorDoubt0;
+    }
+
+    public Color getColorDoubt1()
+    {
+        return colorDoubt1;
+    }
 }

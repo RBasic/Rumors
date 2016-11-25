@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 
 public class SpawnAgent : MonoBehaviour
@@ -15,6 +16,16 @@ public class SpawnAgent : MonoBehaviour
 
     private List<GameObject> lambdas = new List<GameObject>();
 
+    [Header("UI")]
+    [SerializeField] private GameObject board;
+    [SerializeField] private InputField inputInvestigator;
+    [SerializeField] private InputField inputInterprete;
+    [SerializeField] private InputField inputLeader;
+    [SerializeField] private InputField inputApotre;
+    [SerializeField] private InputField inputRelaisPassif;
+    [SerializeField] private InputField inputResistant;
+    [SerializeField] private InputField inputLambda;
+
     enum enumType
     {
        investigator, interprete, leader, apotre, relaisPassif, resistant, lambda
@@ -22,8 +33,27 @@ public class SpawnAgent : MonoBehaviour
 
     void Start()
     {
+        inputLambda.text = "10";
+        inputApotre.text = "1";
+        inputInterprete.text = "1";
+        inputInvestigator.text = "1";
+        inputLeader.text = "1";
+        inputRelaisPassif.text = "1";
+        inputResistant.text = "1";
+    }
+
+    public void init()
+    {
         initiateValues();
-        typeSpawn(10,1,1,1,1,1,1);
+        int intLambda = int.Parse(inputLambda.text);
+        int intApotre = int.Parse(inputApotre.text);
+        int intInterprete = int.Parse(inputInterprete.text);
+        int intInvestigator = int.Parse(inputInvestigator.text);
+        int intLeader = int.Parse(inputLeader.text);
+        int intRelaisPassif = int.Parse(inputRelaisPassif.text);
+        int intResistant = int.Parse(inputResistant.text);
+        board.SetActive(false);
+        typeSpawn(intLambda, intInvestigator, intInterprete, intLeader, intApotre, intRelaisPassif, intResistant);
     }
 
     void initiateValues()
