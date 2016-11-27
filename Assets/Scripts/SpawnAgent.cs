@@ -16,6 +16,9 @@ public class SpawnAgent : MonoBehaviour
 
     private List<GameObject> lambdas = new List<GameObject>();
 
+    // si static, liste de tous les elements
+    private List<GameObject> allAgents = new List<GameObject>();
+
     [Header("UI")]
     [SerializeField] private GameObject board;
     [SerializeField] private InputField inputInvestigator;
@@ -40,6 +43,7 @@ public class SpawnAgent : MonoBehaviour
 
     public void init()
     {
+        GameManager.instance.initBoolMouvement();
         initiateValues();
         int intLambda = int.Parse(inputLambda.text);
         int intApotre = int.Parse(inputApotre.text);
@@ -50,6 +54,13 @@ public class SpawnAgent : MonoBehaviour
         int intResistant = int.Parse(inputResistant.text);
         board.SetActive(false);
         typeSpawn(intLambda, intInvestigator, intInterprete, intLeader, intApotre, intRelaisPassif, intResistant);
+        if (!GameManager.instance.getMouvement())
+        {
+            foreach (GameObject go in allAgents)
+            {
+                go.GetComponent<Agent>().fillListallAgents(allAgents);
+            }
+        }
     }
 
     void initiateValues()
@@ -150,6 +161,10 @@ public class SpawnAgent : MonoBehaviour
                 lambdas.Add(go);
                 break;
 
+        }
+        if (!GameManager.instance.getMouvement())
+        {
+            allAgents.Add(go);
         }
         go.GetComponent<Agent>().init(t);
     }

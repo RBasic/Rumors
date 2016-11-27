@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class Agent : MonoBehaviour
 {
@@ -22,6 +22,9 @@ public class Agent : MonoBehaviour
     public TextMesh t;
 
     private GameManager.enumType typeAgent;
+
+    // si static, liste de tous les elements
+    private List<GameObject> allAgents;
 
     public void init(GameManager.enumType typeAgent)
     {
@@ -120,8 +123,30 @@ public class Agent : MonoBehaviour
         gameObject.GetComponent<MeshRenderer>().material.color = c;
     }
 
+    public Color getColor()
+    {
+        return Color.Lerp(GameManager.instance.getColorDoubt0(), GameManager.instance.getColorDoubt1(), doute);  // Color C is doute% from A and 90% from B. 
+    }
+
     public GameManager.enumType getTypeAgent()
     {
         return typeAgent;
+    }
+
+    public void fillListallAgents(List<GameObject>  all)
+    {
+          // si static, liste de tous les elements
+            allAgents = new List<GameObject>(all);
+    }
+
+    public List<GameObject> getAllAgents()
+    {
+        return allAgents;
+    }
+
+    public void setAllAgents(List<GameObject> newList)
+    {
+        allAgents.Clear();
+        allAgents = new List<GameObject>(newList);
     }
 }

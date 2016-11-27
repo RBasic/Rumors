@@ -15,12 +15,14 @@ public class RandomMoving : MonoBehaviour
     private List<GameObject> avoidAgents = new List<GameObject>();
     private GameObject bla;
 
+    LineRenderer line;
+
 
     void Start()
     {
         bla = Instantiate(GameManager.instance.getBlabla());
         bla.SetActive(false);
-
+        line = this.gameObject.AddComponent<LineRenderer>();
         float randomRotation = Random.Range(0, 360);
         this.transform.Rotate(0,randomRotation,0); 
         Invoke("ChangeRotation", rotationTime);
@@ -38,14 +40,22 @@ public class RandomMoving : MonoBehaviour
 
     void Update()
     {
-        if (!this.gameObject.GetComponent<Agent>().getIsTarget())
+        if (GameManager.instance.getMouvement())
         {
-            transform.Rotate(new Vector3(0, rotationSpeed*Time.deltaTime, 0));
-            transform.position += transform.forward*movementSpeed*Time.deltaTime;
-
-            checkAround();
+            if (!this.gameObject.GetComponent<Agent>().getIsTarget())
+            {
+                transform.Rotate(new Vector3(0, rotationSpeed*Time.deltaTime, 0));
+                transform.position += transform.forward*movementSpeed*Time.deltaTime;
+                checkAround();
+            }
         }
-
+        else
+        {
+            if (!this.gameObject.GetComponent<Agent>().getIsTarget())
+            {
+                contactAgent();
+            }
+        }
 
     }
 
@@ -106,5 +116,70 @@ public class RandomMoving : MonoBehaviour
     {
         avoidAgents.Add(go);
     }
+
+
+
+    /**********************************************/
+
+    void contactAgent()
+    {
+        // s'il reste des agents à contacter
+        if (this.gameObject.GetComponent<Agent>().getAllAgents().Count != 0)
+        {
+            int randomIndex = Random.Range(0, this.gameObject.GetComponent<Agent>().getAllAgents().Count);
+            GameObject a = this.gameObject.GetComponent<Agent>().getAllAgents()[randomIndex];
+            avoidAgents.Add(a);
+            a.gameObject.GetComponent<Agent>().setIsTarget(true);
+            this.gameObject.GetComponent<Agent>().setIsTarget(true);
+            StartCoroutine(lineBlabla(tempsDeplacement, a.transform.position,a.gameObject.GetComponent<Agent>()));
+
+
+        }
+        // sinon retransfere la liste
+        else
+        {
+            this.gameObject.GetComponent<Agent>().setAllAgents(avoidAgents);
+            avoidAgents.Clear();
+            avoidAgents = new List<GameObject>();
+        }
+
+    }
+    IEnumerator lineBlabla(float time, Vector3 pos, Agent a)
+    {
+        float elapsedtime = 0;
+        float dist = Vector3.Distance(this.transform.position, pos);
+        
+        line.SetVertexCount(2);
+        line.SetPosition(0, this.transform.position);
+        line.SetWidth(1, 0);
+        float counter = 0;
+        float drawsPeed = (time - 2)*10f;
+        line.material = GameManager.instance.getLineMat();
+        line.SetColors(this.gameObject.GetComponent<Agent>().getColor(), a.getColor());
+
+        /*
+        Material whiteDiffuseMat = new Material(Shader.Find("Particles/Additive"));
+        
+        this.GetComponent<Renderer>().material.color = Color.white;*/
+        while (counter<dist)//(elapsedtime < time-2)
+        {
+            counter += 1.0f/drawsPeed;
+            float x = Mathf.Lerp(0, dist, counter);//(elapsedtime/time));
+            Vector3 pointAlongLine = x*Vector3.Normalize(pos - this.transform.position) + this.transform.position;
+            line.SetPosition(1, pointAlongLine);
+
+            elapsedtime += Time.deltaTime;
+            yield return null;
+        }
+        yield return new WaitForSeconds(2.0f);
+        line.SetVertexCount(0);
+
+        this.gameObject.GetComponent<Agent>().interaction(a);       // interaction
+        a.gameObject.GetComponent<Agent>().setIsTarget(false);       // re-move
+        this.gameObject.GetComponent<Agent>().setIsTarget(false);    // re-move
+        bla.SetActive(false);
+
+    }
+
 }
 

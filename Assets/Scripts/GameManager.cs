@@ -3,7 +3,21 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
- 
+// TODO :
+// Statique : 
+//    faire des zones de departs, puis procéder petit à petit à l'évoluetion de la rumeur
+//   tout le mond eparle ? que faire si impair ? laisser du temps avant de reparler?
+// Bouge : 
+//    voir les vol planés
+// Tout à la fois : 
+//    rester dans le cadre
+//    ajouter un timer
+//    ajouter des courbes ? ou alors un tableau qui ressence les doutes
+//    bouton reload
+//    pb de lumière
+//    pb de taille
+// Théorie :
+//    2 lambdas ensembles ?
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +34,14 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Color colorDoubt1;
 
+    [Header("Static ou mouvement")]
+    [SerializeField]
+    private Toggle bougeToogle;
+
+    [SerializeField] private Material lineMat;
+
+    private bool mouvement;
+
     public enum enumType
     {
         investigator, interprete, leader, apotre, relaisPassif, resistant, lambda
@@ -29,7 +51,6 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
         _instance = this;
-
     }
 
     public static GameManager instance
@@ -41,7 +62,7 @@ public class GameManager : MonoBehaviour
     }
     private static GameManager _instance;
 
-
+    
     public void displayPanelInfo(bool state)
     {
         panelInfo.SetActive(state);
@@ -114,5 +135,20 @@ public class GameManager : MonoBehaviour
     public Color getColorDoubt1()
     {
         return colorDoubt1;
+    }
+
+    public void initBoolMouvement()
+    {
+        mouvement = bougeToogle.isOn;
+    }
+
+    public bool getMouvement()
+    {
+        return mouvement;
+    }
+
+    public Material getLineMat()
+    {
+        return lineMat;
     }
 }
