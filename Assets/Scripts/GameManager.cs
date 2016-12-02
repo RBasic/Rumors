@@ -239,7 +239,7 @@ public class GameManager : MonoBehaviour
                 }
                 
             }
-           
+
             line.SetVertexCount(indexDoubt.Count);
             for(int i=0; i< (indexDoubt.Count); i++)
             {
