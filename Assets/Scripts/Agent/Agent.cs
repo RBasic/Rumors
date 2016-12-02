@@ -49,6 +49,7 @@ public class Agent : MonoBehaviour
 
     public virtual void interaction(Agent a)
     {
+        Debug.Log("ici1");
         // if the other agent doesn't talk
         if (!a.getIsSpeaking())
         {
