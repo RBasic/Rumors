@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     LineRenderer line;
     [SerializeField]
     private float heightGraph;
+    public List<float> tabDoubt; //en public pour regarder les valeurs sur le gameManager
 
     // liste de tous les elements
     private List<Agent> allAgents = new List<Agent>();
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour
     {
         line = graph.GetComponent<LineRenderer>();
         line.SetColors(colorDoubt0, colorDoubt1);
+        tabDoubt = new List<float>();
     }
     public static GameManager instance
     {
@@ -90,8 +92,12 @@ public class GameManager : MonoBehaviour
         currentAgent = agent;
     }
 
+    float t = 0;
+    int length = 0;
+    float divide = 1;
     void Update()
     {
+
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -121,7 +127,12 @@ public class GameManager : MonoBehaviour
                 updatePanelInfo();
             }
         }
-        displayGraph();
+        //displayGraph();
+        if (allAgents.Count != 0)
+        {
+            drawCourbe();
+        }
+        
     }
 
     private void updatePanelInfo()
@@ -184,7 +195,41 @@ public class GameManager : MonoBehaviour
         return listGo;
 
     }
-    private void displayGraph()
+
+    public float getDoubtMoy()
+    {
+        int nbAgent = allAgents.Count;
+        float doubt = 0;
+        foreach(Agent a in allAgents)
+        {
+            doubt += a.getDoute();
+        }
+
+        doubt /= nbAgent;
+        //Debug.Log("doubt = " + doubt);
+
+        return doubt;
+    }
+
+    public void drawCourbe()
+    {
+        t += Time.deltaTime;
+        if (t > 1)
+        {
+            length++;
+            line.SetVertexCount(length);    // on augmente la taille de la courbe
+            t = 0;
+            divide++;                       // on divise pour avoir toute la courbe
+            tabDoubt.Add(getDoubtMoy());    // recuperation du doute moyen
+        }
+        for (int i = 0; i < length; i++)
+        {
+            Vector3 pos = new Vector3((float)(((i / divide) * 70) + graph.transform.position.x), 0, (tabDoubt[i]) * 50); //valeur du doute + 
+                                                                                                                         //placement dans la scene (pas hyper précis, juste pour que ça rentre pile dans le graphe)
+            line.SetPosition(i, pos);   //ecriture dans le line renderer au bon indice
+        }
+    }
+    /*private void displayGraph()
     {
         int nbAgent = allAgents.Count;
 
@@ -270,5 +315,5 @@ public class GameManager : MonoBehaviour
     float rescaleHeight(float x,float min, float max, float toA, float toB)
     {
         return (((toB-toA)*(x-min)) / (max- min)) + toA;
-    }
+    }*/
 }
