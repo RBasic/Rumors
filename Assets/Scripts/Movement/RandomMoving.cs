@@ -124,10 +124,10 @@ public class RandomMoving : MonoBehaviour
     void contactAgent()
     {
         // s'il reste des agents à contacter
-        if (this.gameObject.GetComponent<Agent>().getAllAgents().Count != 0)
+        if (this.gameObject.GetComponent<Agent>().getAllOtherAgents().Count != 0)
         {
-            int randomIndex = Random.Range(0, this.gameObject.GetComponent<Agent>().getAllAgents().Count);
-            GameObject a = this.gameObject.GetComponent<Agent>().getAllAgents()[randomIndex];
+            int randomIndex = Random.Range(0, this.gameObject.GetComponent<Agent>().getAllOtherAgents().Count);
+            GameObject a = this.gameObject.GetComponent<Agent>().getAllOtherAgents()[randomIndex];
             avoidAgents.Add(a);
             a.gameObject.GetComponent<Agent>().setIsTarget(true);
             this.gameObject.GetComponent<Agent>().setIsTarget(true);
@@ -138,7 +138,7 @@ public class RandomMoving : MonoBehaviour
         // sinon retransfere la liste
         else
         {
-            this.gameObject.GetComponent<Agent>().setAllAgents(avoidAgents);
+            this.gameObject.GetComponent<Agent>().setAllOtherAgents(avoidAgents);
             avoidAgents.Clear();
             avoidAgents = new List<GameObject>();
         }

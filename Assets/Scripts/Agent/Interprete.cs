@@ -6,7 +6,7 @@ public class Interprete : Agent
 
     //si interaction avec investigateur ayant doute opposé alors + ou - 0.1
 
-    public void interaction(Agent a)
+    public override void interaction(Agent a)
     {
         base.interaction(a);
         if (base.getDoute() > 0.5f && a.getDoute() < 0.5f)

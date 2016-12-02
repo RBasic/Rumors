@@ -5,15 +5,18 @@ public class Apotre : Agent {
 
     // doute+0.1f
 
-    public void interaction(Agent a)
+    public override void interaction(Agent a)
     {
         base.interaction(a);
         a.setDoute(0.1f);
+        Debug.Log("ixi");
+
     }
 
-    public new void initDoute()
+    public override void initDoute()
     {
-        setDoute(1);
+        base.setDoute(1.0f);
+
     }
 
     public new void setDoute(float val)

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 // TODO :
@@ -42,6 +42,16 @@ public class GameManager : MonoBehaviour
 
     private bool mouvement;
 
+    [Header("Graph")]
+    [SerializeField]
+    private GameObject graph;
+    LineRenderer line;
+    [SerializeField]
+    private float heightGraph;
+
+    // liste de tous les elements
+    private List<Agent> allAgents = new List<Agent>();
+
     public enum enumType
     {
         investigator, interprete, leader, apotre, relaisPassif, resistant, lambda
@@ -53,6 +63,11 @@ public class GameManager : MonoBehaviour
         _instance = this;
     }
 
+    void Start()
+    {
+        line = graph.GetComponent<LineRenderer>();
+        line.SetColors(colorDoubt0, colorDoubt1);
+    }
     public static GameManager instance
     {
         get
@@ -106,6 +121,7 @@ public class GameManager : MonoBehaviour
                 updatePanelInfo();
             }
         }
+        displayGraph();
     }
 
     private void updatePanelInfo()
@@ -150,5 +166,109 @@ public class GameManager : MonoBehaviour
     public Material getLineMat()
     {
         return lineMat;
+    }
+
+    public List<Agent> getAllAgents()
+    {
+       
+        return allAgents;
+    }
+
+    public List<GameObject> getAllAgentsInGameObject()
+    {
+        List<GameObject> listGo = new List<GameObject>();
+        foreach (Agent a in allAgents)
+        {
+            listGo.Add(a.gameObject);
+        }
+        return listGo;
+
+    }
+    private void displayGraph()
+    {
+        int nbAgent = allAgents.Count;
+
+        if (nbAgent != 0)
+        {
+           
+            Dictionary<int, float> indexDoubt = new Dictionary<int, float>();
+            int nbPosition = -1;
+
+            float startDoubt = -1.0f;
+            float lastDoubt = -1.0f;
+            float minHeight = 0;
+            float maxHeight = 0;
+
+            int nbAgentAtThisDoubt = 0;
+            int nbAgentHeight = 0;
+
+            for (float doubt = 0.0f; doubt <= 1.1f; doubt += 0.1f)
+            {
+                nbAgentAtThisDoubt = 0;
+                foreach (Agent a in allAgents)
+                {
+                   
+                    if ((int)doubt == 1 && a.getDoute()==1.0f)
+                    {
+                        nbAgentAtThisDoubt++;
+                        nbAgentHeight++;
+                    }
+                    if (doubt == 0.0f && a.getDoute() == 0.0f)
+                    {
+                        nbAgentAtThisDoubt++;
+                        nbAgentHeight++;
+                    }
+                    else if ( doubt == a.getDoute())
+                    {
+                        nbAgentAtThisDoubt++;
+                        nbAgentHeight++;
+                    }
+                }
+
+                if (nbAgentAtThisDoubt!=0)
+                {
+                    if (startDoubt == -1)
+                    {
+                        startDoubt = doubt;
+                        minHeight = getHeight(nbAgentHeight, nbAgent);
+                    }
+                    nbPosition++;
+                    maxHeight = getHeight(nbAgentHeight, nbAgent);
+                    indexDoubt.Add(nbPosition, maxHeight);
+                    lastDoubt = doubt;
+                }
+                
+            }
+           
+            line.SetVertexCount(indexDoubt.Count);
+            for(int i=0; i< (indexDoubt.Count); i++)
+            {
+                indexDoubt[i] = rescaleHeight(indexDoubt[i],minHeight,maxHeight, 0.0f, heightGraph);
+                line.SetPosition(i, positionOnGraph(new Vector3(0, indexDoubt[i], 0)));
+            }
+          
+            line.SetWidth(1, 1);
+            Color c0 = Color.Lerp(colorDoubt0, colorDoubt1, startDoubt);
+            Color c1 = Color.Lerp(colorDoubt0, colorDoubt1, lastDoubt);
+
+            line.SetColors(c0,c1);
+        }
+
+    }
+
+    Vector3 positionOnGraph(Vector3 worldPosition)
+    {
+        Vector3 offset = new Vector3(graph.GetComponent<Renderer>().bounds.size.x/2, graph.GetComponent<Renderer>().bounds.size.y/2,-10);
+        return (worldPosition + graph.transform.position);// - offset;
+    }
+
+    float getHeight(int nbAgentAtThisDoubt, int nbAgent)
+    {
+        return (nbAgentAtThisDoubt * heightGraph) / nbAgent;
+    }
+
+    float rescaleHeight(float x,float min, float max, float toA, float toB)
+    {
+        return (((toB-toA)*(x-min)) / (max- min)) + toA;
     }
 }

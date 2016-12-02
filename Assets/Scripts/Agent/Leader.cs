@@ -7,7 +7,7 @@ public class Leader : Agent {
 
     //meneur du groupe + ou -0.2 -> + ou - 0.1 aux personnes du groupe
 
-    public void setDoute(float val)
+    public override void setDoute(float val)
     {
         base.setDoute(val);
         if (base.getDeltadoute() == -0.2f || base.getDeltadoute() == 0.2f)

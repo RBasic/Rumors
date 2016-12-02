@@ -24,7 +24,7 @@ public class Agent : MonoBehaviour
     private GameManager.enumType typeAgent;
 
     // si static, liste de tous les elements
-    private List<GameObject> allAgents;
+    private List<GameObject> otherAgents;
 
     public void init(GameManager.enumType typeAgent)
     {
@@ -36,7 +36,7 @@ public class Agent : MonoBehaviour
         changeColor();
     }
 
-    public void initDoute()
+    public virtual void initDoute()
     {
         int randomDoute = Random.Range(0, 11);
         doute = (float)randomDoute / 10.0f;
@@ -47,8 +47,9 @@ public class Agent : MonoBehaviour
         return defaultcolor;
     }
 
-    public void interaction(Agent a)
+    public virtual void interaction(Agent a)
     {
+        Debug.Log("ici1");
         // if the other agent doesn't talk
         if (!a.getIsSpeaking())
         {
@@ -61,7 +62,7 @@ public class Agent : MonoBehaviour
         }
     }
 
-    public void setDoute(float val)
+    public virtual void setDoute(float val)
     {
         if (doute + val >= 0.0f && doute + val <= 1.0f)
         {
@@ -133,20 +134,20 @@ public class Agent : MonoBehaviour
         return typeAgent;
     }
 
-    public void fillListallAgents(List<GameObject>  all)
+    public void fillListallOtherAgents(List<GameObject>  all)
     {
           // si static, liste de tous les elements
-            allAgents = new List<GameObject>(all);
+            otherAgents = new List<GameObject>(all);
     }
 
-    public List<GameObject> getAllAgents()
+    public List<GameObject> getAllOtherAgents()
     {
-        return allAgents;
+        return otherAgents;
     }
 
-    public void setAllAgents(List<GameObject> newList)
+    public void setAllOtherAgents(List<GameObject> newList)
     {
-        allAgents.Clear();
-        allAgents = new List<GameObject>(newList);
+        otherAgents.Clear();
+        otherAgents = new List<GameObject>(newList);
     }
 }

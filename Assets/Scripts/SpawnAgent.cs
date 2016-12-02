@@ -16,8 +16,7 @@ public class SpawnAgent : MonoBehaviour
 
     private List<GameObject> lambdas = new List<GameObject>();
 
-    // si static, liste de tous les elements
-    private List<GameObject> allAgents = new List<GameObject>();
+ 
 
     [Header("UI")]
     [SerializeField] private GameObject board;
@@ -56,9 +55,9 @@ public class SpawnAgent : MonoBehaviour
         typeSpawn(intLambda, intInvestigator, intInterprete, intLeader, intApotre, intRelaisPassif, intResistant);
         if (!GameManager.instance.getMouvement())
         {
-            foreach (GameObject go in allAgents)
+            foreach (Agent a in GameManager.instance.getAllAgents())
             {
-                go.GetComponent<Agent>().fillListallAgents(allAgents);
+                a.fillListallOtherAgents(GameManager.instance.getAllAgentsInGameObject());
             }
         }
     }
@@ -141,7 +140,10 @@ public class SpawnAgent : MonoBehaviour
                 for (int i = 0; i < nbSuiveurs; i++)
                 {
                     int indexSuiveur = Random.Range(0, lambdas.Count);
-                    go.GetComponent<Leader>().addSuiveur(lambdas[indexSuiveur].GetComponent<Agent>());
+                    if (lambdas.Count != 0)
+                    {
+                        go.GetComponent<Leader>().addSuiveur(lambdas[indexSuiveur].GetComponent<Agent>());
+                    }
                 }
                 break;
 
@@ -162,10 +164,9 @@ public class SpawnAgent : MonoBehaviour
                 break;
 
         }
-        if (!GameManager.instance.getMouvement())
-        {
-            allAgents.Add(go);
-        }
+       
+        GameManager.instance.getAllAgents().Add(go.GetComponent<Agent>());
+        
         go.GetComponent<Agent>().init(t);
     }
 

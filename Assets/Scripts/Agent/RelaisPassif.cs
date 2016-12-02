@@ -8,7 +8,7 @@ public class RelaisPassif : Agent
     //si doute personne < 0.5 alors -0.1 
     //si doute personne ==0.5 alors +0.0
 
-    public void interaction(Agent a)
+    public override void interaction(Agent a)
     {
         base.interaction(a);
         if (a.getDoute() > 0.5f)

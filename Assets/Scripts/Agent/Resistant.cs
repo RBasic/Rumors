@@ -5,18 +5,18 @@ public class Resistant : Agent {
 
     // doute -0.1f
 
-    public void interaction(Agent a)
+    public override void interaction(Agent a)
     {
         base.interaction(a);
         a.setDoute(-0.1f);
     }
 
-    public new void initDoute()
+    public override void initDoute()
     {
-        setDoute(0);
+        base.setDoute(0);
     }
 
-    public new void setDoute(float val)
+    public override void setDoute(float val)
     {
     }
 }
