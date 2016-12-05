@@ -9,8 +9,6 @@ public class Apotre : Agent {
     {
         base.interaction(a);
         a.setDoute(0.1f);
-        Debug.Log("ixi");
-
     }
 
     public override void initDoute()
