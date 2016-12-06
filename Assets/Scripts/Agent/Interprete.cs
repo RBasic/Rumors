@@ -9,13 +9,17 @@ public class Interprete : Agent
     public override void interaction(Agent a)
     {
         base.interaction(a);
-        if (base.getDoute() > 0.5f && a.getDoute() < 0.5f)
+        if (a.getTypeAgent() == GameManager.enumType.investigator)
         {
-            a.setDoute(0.1f);
-        }
-        else if (base.getDoute() < 0.5 && a.getDoute() > 0.5f)
-        {
-            a.setDoute(-0.1f);
+
+            if (base.getDoute() > 0.5f && a.getDoute() < 0.5f)
+            {
+                a.setDoute(0.1f);
+            }
+            else if (base.getDoute() < 0.5 && a.getDoute() > 0.5f)
+            {
+                a.setDoute(-0.1f);
+            }
         }
     }
 }
