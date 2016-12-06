@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 // TODO :
 // Statique : 
@@ -209,6 +210,18 @@ public class GameManager : MonoBehaviour
         //Debug.Log("doubt = " + doubt);
 
         return doubt;
+    }
+
+    public void save()
+    {
+        string s = "";
+        float[] tab = tabDoubt.ToArray();
+        for (int i = 0; i < tab.Length; i++)
+        {
+            s += tab[i].ToString();
+            s += "\r\n";
+        }
+        System.IO.File.WriteAllText("C:/Users/basic/Desktop/sortie.txt", s);
     }
 
     public void drawCourbe()
