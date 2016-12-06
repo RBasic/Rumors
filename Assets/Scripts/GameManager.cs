@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         line = graph.GetComponent<LineRenderer>();
-        line.SetColors(colorDoubt0, colorDoubt1);
+        //line.SetColors(colorDoubt0, colorDoubt1);
         tabDoubt = new List<float>();
     }
     public static GameManager instance
