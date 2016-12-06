@@ -15,7 +15,7 @@ public class Resistant : Agent {
     {
         base.setDoute(0);
     }
-
+    
     public override void setDoute(float val)
     {
     }
