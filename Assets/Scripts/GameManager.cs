@@ -221,7 +221,7 @@ public class GameManager : MonoBehaviour
             s += tab[i].ToString();
             s += "\r\n";
         }
-        System.IO.File.WriteAllText("C:/Users/basic/Desktop/sortie.txt", s);
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/sortie.txt", s);
     }
 
     public void drawCourbe()
