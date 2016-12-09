@@ -45,10 +45,16 @@ public class GameManager : MonoBehaviour
     [Header("Graph")]
     [SerializeField]
     private GameObject graph;
+
     LineRenderer line;
     [SerializeField]
     private float heightGraph;
     public List<float> tabDoubt; //en public pour regarder les valeurs sur le gameManager
+
+    [Header("Jauge")]
+    [SerializeField]
+    private GameObject jauge;
+    LineRenderer lineJauge;
 
     // liste de tous les elements
     private List<Agent> allAgents = new List<Agent>();
@@ -67,8 +73,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         line = graph.GetComponent<LineRenderer>();
-        //line.SetColors(colorDoubt0, colorDoubt1);
         tabDoubt = new List<float>();
+
+        lineJauge = jauge.GetComponent<LineRenderer>();
+        lineJauge.SetColors(colorDoubt0, colorDoubt1);
+
     }
     public static GameManager instance
     {
@@ -127,7 +136,7 @@ public class GameManager : MonoBehaviour
                 updatePanelInfo();
             }
         }
-        //displayGraph();
+        displayJauge();
         if (allAgents.Count != 0)
         {
             drawCourbe();
@@ -229,7 +238,8 @@ public class GameManager : MonoBehaviour
             line.SetPosition(i, pos);   //ecriture dans le line renderer au bon indice
         }
     }
-    /*private void displayGraph()
+
+    private void displayJauge()
     {
         int nbAgent = allAgents.Count;
 
@@ -285,26 +295,26 @@ public class GameManager : MonoBehaviour
                 
             }
 
-            line.SetVertexCount(indexDoubt.Count);
+            lineJauge.SetVertexCount(indexDoubt.Count);
             for(int i=0; i< (indexDoubt.Count); i++)
             {
                 indexDoubt[i] = rescaleHeight(indexDoubt[i],minHeight,maxHeight, 0.0f, heightGraph);
-                line.SetPosition(i, positionOnGraph(new Vector3(0, indexDoubt[i], 0)));
+                lineJauge.SetPosition(i, positionOnGraph(new Vector3(0, indexDoubt[i], 0)));
             }
           
-            line.SetWidth(1, 1);
+            lineJauge.SetWidth(1, 1);
             Color c0 = Color.Lerp(colorDoubt0, colorDoubt1, startDoubt);
             Color c1 = Color.Lerp(colorDoubt0, colorDoubt1, lastDoubt);
 
-            line.SetColors(c0,c1);
+            lineJauge.SetColors(c0,c1);
         }
 
     }
 
     Vector3 positionOnGraph(Vector3 worldPosition)
     {
-        Vector3 offset = new Vector3(graph.GetComponent<Renderer>().bounds.size.x/2, graph.GetComponent<Renderer>().bounds.size.y/2,-10);
-        return (worldPosition + graph.transform.position);// - offset;
+        Vector3 offset = new Vector3(-jauge.GetComponent<Renderer>().bounds.size.x, jauge.GetComponent<Renderer>().bounds.size.y,0);
+        return (worldPosition + jauge.transform.position+ offset);
     }
 
     float getHeight(int nbAgentAtThisDoubt, int nbAgent)
@@ -315,5 +325,5 @@ public class GameManager : MonoBehaviour
     float rescaleHeight(float x,float min, float max, float toA, float toB)
     {
         return (((toB-toA)*(x-min)) / (max- min)) + toA;
-    }*/
+    }
 }
